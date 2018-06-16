@@ -209,7 +209,7 @@ AFRAME.registerComponent('video-controls', {
 
         // Get raycast intersection point, and from there, x_offset in bar
 
-        var point = document.querySelector("a-cursor").components.raycaster.raycaster.intersectObject(this.object3D, true)[0].point;
+        var point = event.detail.cursorEl.components.raycaster.raycaster.intersectObject(this.object3D, true)[0].point;
 
         var x_offset = this.object3D.worldToLocal(point).x;
 
@@ -245,9 +245,9 @@ AFRAME.registerComponent('video-controls', {
 
         self.position_control_from_camera();
 
-        this.addEventListener("dblclick", function(){
+        this.addEventListener("dblclick", function(event){
 
-            var raycaster = document.querySelector("a-cursor").components.raycaster.raycaster;
+            var raycaster = event.detail.cursorEl.components.raycaster.raycaster;
 
             // Double click is outside the player
             // (note that for some reason you cannot prevent a dblclick on player from bubbling up (??)
