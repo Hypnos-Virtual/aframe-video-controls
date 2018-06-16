@@ -42,14 +42,14 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	if (typeof AFRAME === 'undefined') {
 	  throw new Error('Component attempted to register before AFRAME was available.');
 	}
 
-	var DEFAULT_INFO_TEXT_BOTTOM = 'Double-click outside player to hide or show it.';
-	var DEFAULT_INFO_TEXT_TOP = 'Look+click on play or bar. Space bar and arrows also work.';
+	var DEFAULT_INFO_TEXT_BOTTOM = ''; //'Double-click outside player to hide or show it.';
+	var DEFAULT_INFO_TEXT_TOP = ''; //'Look+click on play or bar. Space bar and arrows also work.';
 
 	/**
 	 ** Video control component for A-Frame.
@@ -57,6 +57,8 @@
 
 	AFRAME.registerComponent('video-controls', {
 	  schema: {
+	    useKeys: { default: false },
+	    yOffset: { default: 1.6 },
 	    src: { type: 'string'},
 	    size: { type: 'number', default: 1.0},
 	    distance: { type: 'number', default:2.0},
@@ -100,7 +102,7 @@
 
 	        // Have to add 1.6m to camera.position.y (????)
 
-	        self.y_position = camera.position.y + 1.6;
+	        self.y_position = camera.position.y + self.data.yOffset;
 	        self.x_position = -self.data.distance * Math.sin(camera_yaw * Math.PI / 180.0);
 	        self.z_position = -self.data.distance * Math.cos(camera_yaw * Math.PI / 180.0);
 
@@ -108,7 +110,7 @@
 
 	        // and now, make our controls rotate towards origin
 
-	        this.el.object3D.lookAt(new THREE.Vector3(camera.position.x, camera.position.y + 1.6, camera.position.z));
+	        this.el.object3D.lookAt(new THREE.Vector3(camera.position.x, camera.position.y + self.data.yOffset, camera.position.z));
 
 	    }
 
@@ -206,8 +208,9 @@
 
 	    });
 
-
 	    window.addEventListener('keyup', function(event) {
+	      if (!self.data.useKeys) { return; }
+
 	      switch (event.keyCode) {
 
 	        // If space bar is pressed, fire click on play_image
@@ -255,7 +258,7 @@
 
 	        // Get raycast intersection point, and from there, x_offset in bar
 
-	        var point = document.querySelector("a-cursor").components.raycaster.raycaster.intersectObject(this.object3D, true)[0].point;
+	        var point = event.detail.cursorEl.components.raycaster.raycaster.intersectObject(this.object3D, true)[0].point;
 
 	        var x_offset = this.object3D.worldToLocal(point).x;
 
@@ -291,9 +294,9 @@
 
 	        self.position_control_from_camera();
 
-	        this.addEventListener("dblclick", function(){
+	        this.addEventListener("dblclick", function(event){
 
-	            var raycaster = document.querySelector("a-cursor").components.raycaster.raycaster;
+	            var raycaster = document.querySelector('[cursor]').components.raycaster.raycaster;
 
 	            // Double click is outside the player
 	            // (note that for some reason you cannot prevent a dblclick on player from bubbling up (??)
@@ -345,7 +348,12 @@
 	   * Called when a component is removed (e.g., via removeAttribute).
 	   * Generally undoes all modifications to the entity.
 	   */
-	  remove: function () { },
+	  remove: function () { 
+	    // Remove the child elements we created.
+	    this.el.removeChild(this.bar_canvas);
+	    this.el.removeChild(this.play_image);
+	    this.el.removeChild(this.bar);
+	  },
 
 	  /**
 	   * Called on each scene tick.
@@ -439,7 +447,7 @@
 	                    ctx.fillStyle = this.data.textColor;
 	                    ctx.textAlign = "end";
 
-	                    ctx.fillText(percent.toFixed(0) + "% loaded", this.bar_canvas.width * 0.95, this.bar_canvas.height * 0.60);
+	                    ctx.fillText(percent.toFixed(0) + "%", this.bar_canvas.width * 0.95, this.bar_canvas.height * 0.60);
 	                }
 
 
@@ -512,5 +520,5 @@
 	});
 
 
-/***/ }
+/***/ })
 /******/ ]);
