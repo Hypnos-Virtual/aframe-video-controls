@@ -249,7 +249,7 @@ AFRAME.registerComponent('video-controls', {
 
         this.addEventListener("dblclick", function(event){
 
-            var raycaster = event.detail.cursorEl.components.raycaster.raycaster;
+            var raycaster = document.querySelector('[cursor]').components.raycaster.raycaster;
 
             // Double click is outside the player
             // (note that for some reason you cannot prevent a dblclick on player from bubbling up (??)
