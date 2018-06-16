@@ -2,8 +2,8 @@ if (typeof AFRAME === 'undefined') {
   throw new Error('Component attempted to register before AFRAME was available.');
 }
 
-var DEFAULT_INFO_TEXT_BOTTOM = 'Double-click outside player to hide or show it.';
-var DEFAULT_INFO_TEXT_TOP = 'Look+click on play or bar. Space bar and arrows also work.';
+var DEFAULT_INFO_TEXT_BOTTOM = ''; //'Double-click outside player to hide or show it.';
+var DEFAULT_INFO_TEXT_TOP = ''; //'Look+click on play or bar. Space bar and arrows also work.';
 
 /**
  ** Video control component for A-Frame.
@@ -395,7 +395,7 @@ AFRAME.registerComponent('video-controls', {
                     ctx.fillStyle = this.data.textColor;
                     ctx.textAlign = "end";
 
-                    ctx.fillText(percent.toFixed(0) + "% loaded", this.bar_canvas.width * 0.95, this.bar_canvas.height * 0.60);
+                    ctx.fillText(percent.toFixed(0) + "%", this.bar_canvas.width * 0.95, this.bar_canvas.height * 0.60);
                 }
 
 
