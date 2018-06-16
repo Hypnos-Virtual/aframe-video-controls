@@ -11,6 +11,7 @@ var DEFAULT_INFO_TEXT_TOP = 'Look+click on play or bar. Space bar and arrows als
 
 AFRAME.registerComponent('video-controls', {
   schema: {
+    useKeys: { default: false },
     src: { type: 'string'},
     size: { type: 'number', default: 1.0},
     distance: { type: 'number', default:2.0},
@@ -160,8 +161,9 @@ AFRAME.registerComponent('video-controls', {
 
     });
 
-
     window.addEventListener('keyup', function(event) {
+      if (!self.data.useKeys) { return; }
+
       switch (event.keyCode) {
 
         // If space bar is pressed, fire click on play_image
