@@ -12,6 +12,7 @@ var DEFAULT_INFO_TEXT_TOP = ''; //'Look+click on play or bar. Space bar and arro
 AFRAME.registerComponent('video-controls', {
   schema: {
     useKeys: { default: false },
+    yOffset: { default: 1.6 },
     src: { type: 'string'},
     size: { type: 'number', default: 1.0},
     distance: { type: 'number', default:2.0},
@@ -55,7 +56,7 @@ AFRAME.registerComponent('video-controls', {
 
         // Have to add 1.6m to camera.position.y (????)
 
-        self.y_position = camera.position.y + 1.6;
+        self.y_position = camera.position.y + self.data.yOffset;
         self.x_position = -self.data.distance * Math.sin(camera_yaw * Math.PI / 180.0);
         self.z_position = -self.data.distance * Math.cos(camera_yaw * Math.PI / 180.0);
 
@@ -63,7 +64,7 @@ AFRAME.registerComponent('video-controls', {
 
         // and now, make our controls rotate towards origin
 
-        this.el.object3D.lookAt(new THREE.Vector3(camera.position.x, camera.position.y + 1.6, camera.position.z));
+        this.el.object3D.lookAt(new THREE.Vector3(camera.position.x, camera.position.y + self.data.yOffset, camera.position.z));
 
     }
 

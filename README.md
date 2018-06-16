@@ -29,6 +29,7 @@ You can play with a live demo [here] (https://oscarmarinmiro.github.io/aframe-vi
 | Property | Description                                      | Default Value |
 | -------- | -----------                                      | ------------- |
 | useKeys  | whether to use keys to control                   | false         |
+| yOffset  | Y offset in meters                               | 1.6           |
 | src      | selector of the video asset                      | mandatory     |
 | size     | horizontal size of the player in meters          | 1.0           |
 | distance | distance of the player from the camera in meters | 2.0           |
