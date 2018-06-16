@@ -301,7 +301,12 @@ AFRAME.registerComponent('video-controls', {
    * Called when a component is removed (e.g., via removeAttribute).
    * Generally undoes all modifications to the entity.
    */
-  remove: function () { },
+  remove: function () { 
+    // Remove the child elements we created.
+    this.el.removeChild(this.bar_canvas);
+    this.el.removeChild(this.play_image);
+    this.el.removeChild(this.bar);
+  },
 
   /**
    * Called on each scene tick.
